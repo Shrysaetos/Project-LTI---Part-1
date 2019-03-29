@@ -34,13 +34,13 @@
                         
                         <ul class="nav justify-content-end">
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/">Inventory</router-link>
+                                <router-link class="nav-link" to="/nodeSummary">Inventory</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/myauctions">Second Option</router-link>
+                                <router-link class="nav-link" to="/">Second Option</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/acquired">Third Option</router-link>
+                                <router-link class="nav-link" to="/">Third Option</router-link>
                             </li>
                         </ul>
                     </div>

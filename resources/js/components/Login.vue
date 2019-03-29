@@ -8,7 +8,5 @@
     	<input type="password" v-model="password" placeholder="password">
     	<button v-on:click= "getNumberOfSwitches(ipAndPort, username, password)">SEND</button><br><br>
 
-    	<p>string: @{{str}}</p>
-    	<p>base64: @{{encodedStr}}</p>
 	</div>
 </template>

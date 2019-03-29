@@ -1782,6 +1782,8 @@ module.exports = {
 //
 //
 //
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -1790,56 +1792,18 @@ module.exports = {
     };
   },
   methods: {
-    // Make the actual CORS request.
-    makeCorsRequest: function makeCorsRequest(method, url) {
-      var xhr = new XMLHttpRequest();
-
-      if ("withCredentials" in xhr) {
-        // XHR for Chrome/Firefox/Opera/Safari.
-        xhr.open(method, url, true);
-      } else if (typeof XDomainRequest != "undefined") {
-        // XDomainRequest for IE.
-        xhr = new XDomainRequest();
-        xhr.open(method, url);
-      } else {
-        // CORS not supported.
-        xhr = null;
-      }
-
-      if (!xhr) {
-        alert('CORS not supported');
-        return;
-      } // Response handlers.
-
-
-      xhr.onload = function () {
-        var text = xhr.responseText;
-        var title = text.match('<title>(.*)?</title>')[1];
-        alert('Response from CORS request to ' + url + ': ' + title);
-      };
-
-      xhr.onerror = function () {
-        alert('Woops, there was an error making the request.');
-      };
-
-      xhr.withCredentials = true;
-      xhr.setRequestHeader('Authorization', 'Basic YWRtaW46YWRtaW4=');
-      xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-      xhr.send();
-    },
-    getNumberOfSwitches: function getNumberOfSwitches() {
+    getSwitchesInfo: function getSwitchesInfo() {
       this.switchesInfo = [];
       var vm = this;
-      makeCorsRequest('GET', 'http://10.10.10.2:8181/restconf/operational/opendaylight-inventory:nodes').then(function (response) {
+      axios.get('api/nodeSummary').then(function (response) {
         vm.switchesInfo = response.data;
-        vm.switchesCount = vm.switchesInfo.nodes.node.length;
       }).catch(function (error) {
         vm.switchesInfo = 'An error occurred.' + error;
       });
     }
   },
   mounted: function mounted() {
-    this.getNumberOfSwitches();
+    this.getSwitchesInfo();
   }
 };
 
@@ -36780,11 +36744,7 @@ var render = function() {
       [_vm._v("SEND")]
     ),
     _c("br"),
-    _c("br"),
-    _vm._v(" "),
-    _c("p", [_vm._v("string: @" + _vm._s(_vm.str))]),
-    _vm._v(" "),
-    _c("p", [_vm._v("base64: @" + _vm._s(_vm.encodedStr))])
+    _c("br")
   ])
 }
 var staticRenderFns = []
@@ -36817,8 +36777,14 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.switchesInfo, function(s) {
-          return _c("tr", [_c("td", [_vm._v(_vm._s(s.nodes.node.id))])])
+        _vm._l(_vm.switchesInfo.nodes.node, function(s) {
+          return _c("tr", [
+            _c("td", [_vm._v(_vm._s(s.id))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(s["flow-node-inventory:hardware"]))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(s["flow-node-inventory:description"]))])
+          ])
         }),
         0
       )
@@ -52706,7 +52672,7 @@ var routes = [{
   redirect: '/login'
 }, {
   path: '/login',
-  component: '/loginComponent'
+  component: loginComponent
 }, {
   path: '/nodeSummary',
   component: nodeSummaryComponent
