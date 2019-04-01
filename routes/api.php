@@ -21,3 +21,5 @@ Route::get('/flowsSummary', 'ItemController@getTables');
 Route::get('/nodeSummary', 'ItemController@getNodes');
 Route::post('login', 'LoginControllerAPI@login'); 
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
+Route::get('/link', 'LinksController@getLinks');
+Route::get('/configFlow', 'ItemController@getNodes');
