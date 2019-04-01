@@ -1,8 +1,10 @@
 <template>
     <div>
         <div class="jumbotron">
-            <h3>Nodes Summary</h3>
+            <h1>Nodes Summary</h1>
         </div>
+        <p>Number of Switches: {{switchesCount}}</p>
+
     	<table class="table">
         	<thead>
         	    <tr>
@@ -19,7 +21,7 @@
             	</tr>
         	</tbody>
     	</table>
-    	</div>
+    </div>
 </template>
 <script>
     module.exports = {
@@ -36,6 +38,7 @@
                 axios.get('api/nodeSummary')
                     .then(function (response){
                         vm.switchesInfo = response.data;
+                        vm.switchesCount = vm.switchesInfo.nodes.node.length;
                     })
                     .catch(function (error){
                         vm.switchesInfo = 'An error occurred.' + error;

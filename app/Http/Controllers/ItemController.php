@@ -18,5 +18,14 @@ class ItemController extends Controller
 		return $response;
     }
 
+    public function getTables() {
+
+		$client = new \GuzzleHttp\Client();
+		$headers = ['auth' => ['admin', 'admin']];
+		$table = $client->request('GET', 'http://10.10.10.2:8181/restconf/operational/opendaylight-inventory:nodes/node/openflow:1/table/0', $headers);
+
+		return $table;
+    }
+
 
 }

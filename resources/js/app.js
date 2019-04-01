@@ -35,6 +35,8 @@ Vue.use(Toasted, {
 
 const loginComponent = Vue.component('login', require('./components/Login.vue').default);
 const nodeSummaryComponent = Vue.component('node-summary', require('./components/NodesSummary.vue').default);
+const flowSummaryComponent = Vue.component('flow-summary', require('./components/FlowsSummary.vue').default);
+const createFlowComponent = Vue.component('create-flow', require('./components/CreateFlow.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -58,6 +60,16 @@ const routes = [
 		path: '/nodeSummary',
 		component: nodeSummaryComponent,
 	},
+
+	{
+		path: '/flowsSummary',
+		component: flowSummaryComponent
+	},
+
+	{
+		path: '/createFlow',
+		component: createFlowComponent,
+	}
 
 ];
 
