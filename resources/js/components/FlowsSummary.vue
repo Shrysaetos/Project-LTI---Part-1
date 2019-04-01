@@ -18,8 +18,7 @@
        		</thead>
         	<tbody>
                 <tr v-for="s in switchesInfo.nodes.node">
-                    <tr v-for = "f in tablesInfo.flow-node-inventory:table.flow">
-                        <td>{{s["flow-node-inventory:table"][68]["flow"][2]}}</td>
+                    <tr v-for='t in tablesInfo["flow-node-inventory:table"][0]["flow"]'>{{t["id"]}}
                     </tr>
                 </tr>
         	</tbody>
