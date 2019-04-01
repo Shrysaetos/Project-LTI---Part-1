@@ -40,7 +40,7 @@
                                 <router-link class="nav-link" to="/flowsSummary">Flows</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/">Links</router-link>
+                                <router-link class="nav-link" to="/links">Links</router-link>
                             </li>
                         </ul>
                     </div>

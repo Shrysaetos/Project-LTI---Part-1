@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/flowsSummary', 'ItemController@getNodes');
 Route::get('/flowsSummary', 'ItemController@getTables');
 Route::get('/nodeSummary', 'ItemController@getNodes');
 Route::post('login', 'LoginControllerAPI@login'); 

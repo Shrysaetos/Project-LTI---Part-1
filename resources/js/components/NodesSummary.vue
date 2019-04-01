@@ -11,6 +11,7 @@
         	        <th>Device</th>
         	        <th>Device type</th>
         	        <th>Device name</th>
+                    <th>Active flows</th>
         	    </tr>
        		</thead>
         	<tbody>
@@ -18,7 +19,9 @@
             	    <td>{{s.id}}</td>
                     <td>{{s["flow-node-inventory:hardware"]}}</td>
                     <td>{{s["flow-node-inventory:description"]}}</td>
+                    <td>{{s["flow-node-inventory:table"][68]["opendaylight-flow-table-statistics:flow-table-statistics"]["active-flows"]}}</td>
             	</tr>
+
         	</tbody>
     	</table>
     </div>

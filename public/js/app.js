@@ -1780,10 +1780,6 @@ module.exports = {
 //
 //
 //
-//
-//
-//
-//
 module.exports = {
   data: function data() {
     return {
@@ -1859,29 +1855,36 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   data: function data() {
     return {
-      tablesInfo: [],
-      flowsCount: 0
+      switchesInfo: [],
+      tablesInfo: []
     };
   },
   methods: {
-    getTablesInfo: function getTablesInfo() {
+    getSwitchesInfo: function getSwitchesInfo() {
       this.switchesInfo = [];
+      var vm = this;
+      axios.get('api/nodeSummary').then(function (response) {
+        vm.switchesInfo = response.data;
+      }).catch(function (error) {
+        vm.switchesInfo = 'An error occurred.' + error;
+      });
+    },
+    getTablesInfo: function getTablesInfo() {
+      this.tablesInfo = [];
       var vm = this;
       axios.get('api/flowsSummary').then(function (response) {
         vm.tablesInfo = response.data;
-        vm.flowsCount = vm.tablesInfo.length;
       }).catch(function (error) {
         vm.tablesInfo = 'An error occurred.' + error;
       });
-    },
-    createFlow: function createFlow() {
-      this.$router.push('/createFlow');
     }
   },
   mounted: function mounted() {
+    this.getSwitchesInfo();
     this.getTablesInfo();
   }
 };
@@ -1956,6 +1959,9 @@ module.exports = {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+//
+//
+//
 //
 //
 //
@@ -36876,50 +36882,6 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("div", [
-      _c("label", { attrs: { for: "table_number" } }, [_vm._v("Table Number")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedOption,
-              expression: "selectedOption"
-            }
-          ],
-          staticClass: "custom-select",
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedOption = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v("-- Select a table --")
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.tablesWithoutActiveMealsAtTheMoment, function(table) {
-            return _c("option", { key: table.table_number }, [
-              _vm._v(_vm._s(table.table_number))
-            ])
-          })
-        ],
-        2
-      ),
-      _vm._v(" "),
       _c(
         "button",
         {
@@ -36979,77 +36941,8 @@ render._withStripped = true
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-lg btn-info col-lg-2 control-label",
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.createFlow($event)
-          }
-        }
-      },
-      [_vm._v("Create Flow")]
-    ),
-    _vm._v(" "),
-    _c("table", { staticClass: "table" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.tablesInfo, function(t) {
-          return _c("tr", [
-            _c("td", [_vm._v(_vm._s(t))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.flowsCount))])
-          ])
-        }),
-        0
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v("Flows Summary")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Flow ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Table ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Device")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Device type")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Device name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Operational")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
+var render = function () {}
+var staticRenderFns = []
 
 
 
@@ -37270,7 +37163,17 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(s["flow-node-inventory:hardware"]))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(s["flow-node-inventory:description"]))])
+            _c("td", [_vm._v(_vm._s(s["flow-node-inventory:description"]))]),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(
+                _vm._s(
+                  s["flow-node-inventory:table"][68][
+                    "opendaylight-flow-table-statistics:flow-table-statistics"
+                  ]["active-flows"]
+                )
+              )
+            ])
           ])
         }),
         0
@@ -37297,7 +37200,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Device type")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Device name")])
+        _c("th", [_vm._v("Device name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Active flows")])
       ])
     ])
   }

@@ -10,11 +10,7 @@
     </div>
 
     <div>
-      <label for="table_number">Table Number</label>
-      <select class="custom-select" v-model="selectedOption">
-        <option disabled selected>-- Select a table --</option>
-        <option v-for="table in tablesWithoutActiveMealsAtTheMoment" v-bind:key="table.table_number">{{table.table_number}}</option>
-      </select>
+        
 
       <button type="button" class="btn btn-outline-success" v-on:click.prevent="createMeal(selectedOption)">Create Meal</button>
       <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>

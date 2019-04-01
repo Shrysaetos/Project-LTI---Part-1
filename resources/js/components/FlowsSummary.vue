@@ -17,10 +17,11 @@
         	    </tr>
        		</thead>
         	<tbody>
-            	<tr v-for="t in tablesInfo">
-                    <td>{{t}}</td>
-                    <td>{{flowsCount}}</td>
-            	</tr>
+                <tr v-for="s in switchesInfo.nodes.node">
+                    <tr v-for = "f in tablesInfo.flow-node-inventory:table.flow">
+                        <td>{{s["flow-node-inventory:table"][68]["flow"][2]}}</td>
+                    </tr>
+                </tr>
         	</tbody>
     	</table>
     	</div>
@@ -28,29 +29,38 @@
 <script>
     module.exports = {
         data() {
-        	return {
+            return {
+                switchesInfo: [],
                 tablesInfo: [],
-                flowsCount: 0,
-        	};
+            };
         },
         methods: {
-            getTablesInfo: function () {
+            getSwitchesInfo: function () {
                 this.switchesInfo = [];
+                var vm = this;
+                axios.get('api/nodeSummary')
+                    .then(function (response){
+                        vm.switchesInfo = response.data;
+                    })
+                    .catch(function (error){
+                        vm.switchesInfo = 'An error occurred.' + error;
+                    });
+            },
+
+            getTablesInfo: function () {
+                this.tablesInfo = [];
                 var vm = this;
                 axios.get('api/flowsSummary')
                     .then(function (response){
                         vm.tablesInfo = response.data;
-                        vm.flowsCount = vm.tablesInfo.length;
                     })
                     .catch(function (error){
                         vm.tablesInfo = 'An error occurred.' + error;
                     });
-            },
-            createFlow: function () {
-                this.$router.push('/createFlow');
             }
         },
         mounted() {
+            this.getSwitchesInfo();
             this.getTablesInfo();
         }
     };
