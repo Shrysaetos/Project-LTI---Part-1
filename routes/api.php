@@ -31,9 +31,14 @@ Route::delete('flowsSummary/2/{flow}', 'FlowController@deleteFlowS2');
 Route::delete('flowsSummary/3/{flow}', 'FlowController@deleteFlowS3');
 Route::delete('flowsSummary/4/{flow}', 'FlowController@deleteFlowS4');
 
+//create flow
+Route::put('createFlow/{device}/{flowTable}/{flowId}', 'FlowController@addFlow');
+
 
 Route::get('/nodeSummary', 'NodeController@getNodes');
 Route::post('login', 'LoginControllerAPI@login'); 
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 Route::get('/link', 'LinksController@getLinks');
 Route::get('/configFlow', 'ItemController@getNodes');
+Route::get('/createFlow', 'ItemController@getNodes');
+
