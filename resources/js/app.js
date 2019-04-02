@@ -37,6 +37,11 @@ const loginComponent = Vue.component('login', require('./components/Login.vue').
 const nodeSummaryComponent = Vue.component('node-summary', require('./components/NodesSummary.vue').default);
 
 const flowSummaryComponent = Vue.component('flow-summary', require('./components/FlowsSummary.vue').default);
+const flowSummaryS1Component = Vue.component('flow-summary-s1', require('./components/FlowsSummaryS1.vue').default);
+const flowSummaryS2Component = Vue.component('flow-summary-s2', require('./components/FlowsSummaryS2.vue').default);
+const flowSummaryS3Component = Vue.component('flow-summary-s3', require('./components/FlowsSummaryS3.vue').default);
+const flowSummaryS4Component = Vue.component('flow-summary-s4', require('./components/FlowsSummaryS4.vue').default);
+
 const createFlowComponent = Vue.component('create-flow', require('./components/CreateFlow.vue').default);
 
 const linksComponent = Vue.component('links', require('./components/Links.vue').default);
@@ -70,6 +75,25 @@ const routes = [
 		component: flowSummaryComponent
 	},
 
+	{
+		path: '/flowsSummary/1',
+		component: flowSummaryS1Component
+	},
+
+	{
+		path: '/flowsSummary/2',
+		component: flowSummaryS2Component
+	},
+
+	{
+		path: '/flowsSummary/3',
+		component: flowSummaryS3Component
+	},
+
+	{
+		path: '/flowsSummary/4',
+		component: flowSummaryS4Component
+	},
 	{
 		path: '/createFlow',
 		component: createFlowComponent,
