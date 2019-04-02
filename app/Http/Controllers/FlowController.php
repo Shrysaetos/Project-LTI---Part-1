@@ -71,4 +71,24 @@ class FlowController extends Controller
     	$client->delete('http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:4/table/0/flow/' . $flow , $headers);
     }
 
+
+
+    //Adicionar flows
+
+    public function addFlow ($device, $flowTable, $flowId) {
+        $client = new \GuzzleHttp\Client();
+        $headers = ['auth' => ['admin', 'admin']];
+
+        $body = '{ "flow": [ { "table_id": "'.$flowTable.'", "id": "'.$flowId.'", "priority": "1", "match": { "in-port": "openflow:1:1" }, "instructions": { "instruction": [ { "order": 0, "apply-actions": { "action": [ { "order": 0, "drop-action": {} } ] } } ] } } ] ';
+
+
+        $client->put('http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'headers'         => $headers,
+            'body'            => $body,
+            'allow_redirects' => false,
+            'timeout'         => 5
+        ]);
+
+    }
+
 }
