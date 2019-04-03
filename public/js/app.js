@@ -1853,7 +1853,7 @@ module.exports = {
 
       this.teste = [];
       var vm = this;
-      axios.put('api/createFlow' + device + flowTable + flowId).then(function (response) {
+      axios.put('api/createFlow/' + device + '/' + flowTable + '/' + flowId).then(function (response) {
         _this.getTablesS1();
       });
     },

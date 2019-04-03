@@ -93,7 +93,7 @@
       addFlow: function (device, flowTable, flowId) {
         this.teste = [];
           var vm = this;
-          axios.put('api/createFlow' + device + flowTable + flowId)
+          axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId)
             .then(response => {
               this.getTablesS1();
             })
