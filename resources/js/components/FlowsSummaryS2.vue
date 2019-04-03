@@ -79,6 +79,10 @@
                         this.getTablesS2();
                     })
             },
+
+            createFlow() {
+                this.$router.push('/createFlow');
+            }
         },
         mounted() {
             this.getSwitchesInfo();

@@ -78,6 +78,10 @@
                     .then(response => {
                         this.getTablesS1();
                     })
+            },
+
+            createFlow() {
+                this.$router.push('/createFlow');
             }
         },
         mounted() {

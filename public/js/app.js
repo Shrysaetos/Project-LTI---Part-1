@@ -1780,30 +1780,81 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
-      tablesWithoutActiveMealsAtTheMoment: [],
-      selectedOption: null,
-      successMessage: "",
-      failMessage: "",
-      showSuccess: false,
-      showFailure: false
+      switchesInfo: [],
+      teste: [],
+      device: "",
+      flowTable: "",
+      flowId: "",
+      priority: "",
+      flowName: "",
+      port: "",
+      vlanId: "",
+      ipSource: "",
+      ipDest: "",
+      checkedDrop: ""
     };
   },
   methods: {
-    createMeal: function createMeal(table_number) {
+    getSwitchesInfo: function getSwitchesInfo() {
+      this.switchesInfo = [];
+      var vm = this;
+      axios.get('api/nodeSummary').then(function (response) {
+        vm.switchesInfo = response.data;
+      }).catch(function (error) {
+        vm.switchesInfo = 'An error occurred.' + error;
+      });
+    },
+    addFlow: function addFlow(device, flowTable, flowId) {
       var _this = this;
 
-      axios.post("/api/meals/createMealOnTable/" + table_number + "/onWaiter/" + this.$store.getters.getAuthUser.id).then(function (response) {
-        _this.successMessage = "Meal created successfully!";
-        _this.showSuccess = true;
-
-        _this.goBack();
-      }).catch(function (error) {
-        console.log(error);
-        this.failMessage = "Meal not created!";
-        this.showFailure = true;
+      this.teste = [];
+      var vm = this;
+      axios.put('api/createFlow' + device + flowTable + flowId).then(function (response) {
+        _this.getTablesS1();
       });
     },
     goBack: function goBack() {
@@ -1811,11 +1862,8 @@ module.exports = {
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
-
-    axios.get("/api/meals/tablesWithoutActiveMeals").then(function (response) {
-      _this2.tablesWithoutActiveMealsAtTheMoment = response.data;
-    });
+    this.getSwitchesInfo();
+    this.addFlow();
   }
 };
 
@@ -1956,6 +2004,9 @@ module.exports = {
       axios.delete('api/flowsSummary/1/' + flow.id).then(function (response) {
         _this.getTablesS1();
       });
+    },
+    createFlow: function createFlow() {
+      this.$router.push('/createFlow');
     }
   },
   mounted: function mounted() {
@@ -2046,6 +2097,9 @@ module.exports = {
       axios.delete('api/flowsSummary/2/' + flow.id).then(function (response) {
         _this.getTablesS2();
       });
+    },
+    createFlow: function createFlow() {
+      this.$router.push('/createFlow');
     }
   },
   mounted: function mounted() {
@@ -2136,6 +2190,9 @@ module.exports = {
       axios.delete('api/flowsSummary/3/' + flow.id).then(function (response) {
         _this.getTablesS1();
       });
+    },
+    createFlow: function createFlow() {
+      this.$router.push('/createFlow');
     }
   },
   mounted: function mounted() {
@@ -2226,6 +2283,9 @@ module.exports = {
       axios.delete('api/flowsSummary/4/' + flow.id).then(function (response) {
         _this.getTablesS1();
       });
+    },
+    createFlow: function createFlow() {
+      this.$router.push('/createFlow');
     }
   },
   mounted: function mounted() {
@@ -37206,27 +37266,318 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _vm.showSuccess || _vm.showFailure
-      ? _c(
-          "div",
-          {
-            staticClass: "alert",
-            class: {
-              "alert-success": _vm.showSuccess,
-              "alert-danger": _vm.showFailure
-            }
-          },
-          [
-            _c("strong", [_vm._v(_vm._s(_vm.successMessage))]),
-            _vm._v(" "),
-            _c("strong", [_vm._v(_vm._s(_vm.failMessage))])
-          ]
+    _c("div", { staticClass: "jumbotron" }, [
+      _c("h1", [_vm._v("Create Flow")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "TESTE URL: " +
+            _vm._s(_vm.device) +
+            " | " +
+            _vm._s(_vm.flowId) +
+            " | " +
+            _vm._s(_vm.flowTable) +
+            " | " +
+            _vm._s(_vm.priority)
         )
-      : _vm._e(),
+      ])
+    ]),
     _vm._v(" "),
     _c("div", [
+      _c("label", [_vm._v("Device: ")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.device,
+              expression: "device"
+            }
+          ],
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.device = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { disabled: "", value: "" } }, [
+            _vm._v("Please select one")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.switchesInfo.nodes.node, function(s) {
+            return _c("option", [_vm._v(_vm._s(s.id))])
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [_vm._v("Flow ID: ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.flowId,
+            expression: "flowId"
+          }
+        ],
+        attrs: { placeholder: "Insert flow ID" },
+        domProps: { value: _vm.flowId },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.flowId = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [_vm._v("Flow Name: ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.flowName,
+            expression: "flowName"
+          }
+        ],
+        attrs: { placeholder: "Insert flow name" },
+        domProps: { value: _vm.flowName },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.flowName = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [_vm._v("Flow Table: ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.flowTable,
+            expression: "flowTable"
+          }
+        ],
+        attrs: { placeholder: "Insert flow Table [0-255]" },
+        domProps: { value: _vm.flowTable },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.flowTable = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [_vm._v("Priority: ")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.priority,
+            expression: "priority"
+          }
+        ],
+        attrs: { placeholder: "Priority" },
+        domProps: { value: _vm.priority },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.priority = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", [
+        _c("h4", [_vm._v("Match")]),
+        _vm._v(" "),
+        _c("label", [_vm._v("In Port: ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.port,
+              expression: "port"
+            }
+          ],
+          attrs: { placeholder: "Port" },
+          domProps: { value: _vm.port },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.port = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", [_vm._v("VLAN ID: ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.vlanId,
+              expression: "vlanId"
+            }
+          ],
+          attrs: { placeholder: "[0-4095]" },
+          domProps: { value: _vm.vlanId },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.vlanId = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", [_vm._v("IPv4 Source: ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ipSource,
+              expression: "ipSource"
+            }
+          ],
+          attrs: { placeholder: "<ip>/<mask>" },
+          domProps: { value: _vm.ipSource },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.ipSource = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", [_vm._v("IPv4 Destination: ")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ipDest,
+              expression: "ipDest"
+            }
+          ],
+          attrs: { placeholder: "<ip>/<mask>" },
+          domProps: { value: _vm.ipDest },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.ipDest = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("br")
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", [
+        _c("h4", [_vm._v("Actions")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.checkedDrop,
+              expression: "checkedDrop"
+            }
+          ],
+          attrs: { type: "checkbox", id: "checkDrop" },
+          domProps: {
+            checked: Array.isArray(_vm.checkedDrop)
+              ? _vm._i(_vm.checkedDrop, null) > -1
+              : _vm.checkedDrop
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.checkedDrop,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.checkedDrop = $$a.concat([$$v]))
+                } else {
+                  $$i > -1 &&
+                    (_vm.checkedDrop = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)))
+                }
+              } else {
+                _vm.checkedDrop = $$c
+              }
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", [_vm._v("Drop")])
+      ]),
+      _vm._v(" "),
       _c(
         "button",
         {
@@ -37235,12 +37586,14 @@ var render = function() {
           on: {
             click: function($event) {
               $event.preventDefault()
-              return _vm.createMeal(_vm.selectedOption)
+              return _vm.addFlow(_vm.device, _vm.flowTable, _vm.flowId)
             }
           }
         },
-        [_vm._v("Create Meal")]
+        [_vm._v("Add Flow")]
       ),
+      _vm._v(" "),
+      _c("p", [_vm._v("Teste Final: " + _vm._s(_vm.teste))]),
       _vm._v(" "),
       _c(
         "button",
@@ -37259,16 +37612,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v("Create Flow")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
