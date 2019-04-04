@@ -77,147 +77,337 @@ class FlowController extends Controller
 
     public function addFlow ($device, $flowTable, $flowId, $priority) {
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+            ]
         ];
 
-        $body = '{
-                  "flow": [
-                    {
-                      "table_id": "'.$flowTable.'",
-                      "id": "'.$flowId.'"
-                    }
-                  ]
-                }';
-
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
-
-        //$client->put($url, $headers, json_encode($body));
-        $client->request('PUT', $url, [
-            'headers' => [
-                'auth' => 'Basic YWRtaW46YWRtaW4=',
-                'content-type' => 'application/json',
-                'Accept' => 'application/json'
-            ],
-            'body' => $body
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
         ]);
-
     }
- 
 
-    //Adicionar flows match+drop
-    public function addFlowPortDrop ($device, $flowTable, $flowId, $priority, $inPort) {
+public function addFlowPortDrop ($device, $flowTable, $flowId, $priority, $inPort) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+       
+        $cod = ['flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'in-port' => 'openflow:1:1'
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => '0',
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ] 
+
+        ];
+
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+        
     }
+
 
 
     public function addFlowVlanDrop ($device, $flowTable, $flowId, $priority, $vlanId) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
+
+        $cod = '{
+                  "flow": [
+                    {
+                      "table_id": "0",
+                      "id": "123",
+                      "priority": "500",
+                      "match": {
+                        "vlan-match": {
+                          "vlan-id": {
+                            "vlan-id": "0",
+                            "vlan-id-present": "true"
+                          }
+                        }
+                      },
+                      "instructions": {
+                        "instruction": [
+                          {
+                            "order": "0",
+                            "apply-actions": {
+                              "action": [
+                                {
+                                  "order": "0",
+                                  "drop-action": {}
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }';
+
+        $decod = json_decode($cod);
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
             'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
             'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
-
-        $body =
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $decod,
+        ]);
+        
     }
-
 
     public function addFlowIpSourceDrop ($device, $flowTable, $flowId, $priority, $ipSource) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'ipv4-source' => $ipSource,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
     }
 
 
     public function addFlowIpDestDrop ($device, $flowTable, $flowId, $priority, $ipDest) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'ipv4-destination' => $ipDest,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+
+
     }
 
 
-    public function addFlowUdpSourceDrop ($device, $flowTable, $flowId, $priority, $udpSIp) {
+ public function addFlowUdpSourceDrop ($device, $flowTable, $flowId, $priority, $udpSIp) {
 
-        $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
+       $client = new \GuzzleHttp\Client();
+
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'udp-source-port' => $udpSIp,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+
+
     }
 
 
     public function addFlowUdpDestDrop ($device, $flowTable, $flowId, $priority, $udpDIp) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'udp-destination-port' => $udpDIp,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+
     }
 
 
     public function addFlowTcpSourceDrop ($device, $flowTable, $flowId, $priority, $tcpSIp) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'tcp-source-port' => $tcpSIp,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+
     }
 
 
     public function addFlowTcpDestDrop ($device, $flowTable, $flowId, $priority, $tcpDIp) {
 
         $client = new \GuzzleHttp\Client();
-        $headers = [
-            'auth' => ['admin', 'admin'],
-            'content-type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-        $body =
+        $cod = [ 
+            'flow' => [
+                'table_id' => $flowTable,
+                'id' => $flowId,
+                'priority' => $priority,
+                'match' => [
+                    'tcp-destination-port' => $tcpDIp,
+                ],
+                'instructions' => [
+                    'instruction' => [
+                        'order' => '0',
+                        'apply-actions' => [
+                            'action' => [
+                                'order' => 0,
+                                'drop-action' => [],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
+            'auth' => ['admin', 'admin'],
+            'NETOAPI_KEY' => env('NETO_API_KEY'),
+            'Accept' => 'application/json',
+            'NETOAPI_ACTION' => 'GetOrder',
+            'json'    => $cod,
+        ]);
+
     }
+
+
+
+
 
 
 
