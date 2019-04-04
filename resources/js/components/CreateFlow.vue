@@ -135,6 +135,8 @@
       <br>
 
       <div>
+
+        <button type="button" class="btn btn-outline-success" v-on:click.prevent='addFlow(device, flowTable, flowId, priority)'>Add Flow Teste</button>
       
         <button v-if="match === 'In Port' && checkedDrop" type="button" class="btn btn-outline-success" v-on:click.prevent='addFlowPortDrop(device, flowTable, flowId, priority, inPort)'>Add Flow1</button>
 
@@ -227,7 +229,7 @@
 
       addFlowPortDrop: function (device, flowTable, flowId, priority, inPort) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + inPort)
+        axios.put('api/createFlow/port/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + inPort)
           .then(response => {
 
           })
@@ -235,7 +237,7 @@
 
       addFlowVlanDrop: function (device, flowTable, flowId, priority, vlanId) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + vlanId)
+        axios.put('api/createFlow/vlan/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + vlanId)
           .then(response => {
 
           })
@@ -243,7 +245,7 @@
 
       addFlowIpSourceDrop: function (device, flowTable, flowId, priority, ipSource) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + ipSource)
+        axios.put('api/createFlow/ipSource/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + ipSource)
           .then(response => {
 
           })
@@ -251,7 +253,7 @@
 
       addFlowIpDestDrop: function (device, flowTable, flowId, priority, ipDest) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + ipDest)
+        axios.put('api/createFlow/ipDest/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + ipDest)
           .then(response => {
 
           })
@@ -259,7 +261,7 @@
 
       addFlowUdpSourceDrop: function (device, flowTable, flowId, priority, udpSIp) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + udpSIp)
+        axios.put('api/createFlow/udpSource/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + udpSIp)
           .then(response => {
 
           })
@@ -267,7 +269,7 @@
 
             addFlowUdpDestDrop: function (device, flowTable, flowId, priority, udpDIp) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + udpDIp)
+        axios.put('api/createFlow/udpDest/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + udpDIp)
           .then(response => {
 
           })
@@ -275,7 +277,7 @@
 
       addFlowTcpSourceDrop: function (device, flowTable, flowId, priority, tcpSIp) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + tcpSIp)
+        axios.put('api/createFlow/tcpSource/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + tcpSIp)
           .then(response => {
 
           })
@@ -283,7 +285,7 @@
 
       addFlowTcpDestDrop: function (device, flowTable, flowId, priority, tcpDIp) {
         var vm = [];
-        axios.put('api/createFlow/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + tcpDIp)
+        axios.put('api/createFlow/tcpDest/' + device + '/'+ flowTable + '/' + flowId + '/' + priority + '/' + tcpDIp)
           .then(response => {
 
           })
