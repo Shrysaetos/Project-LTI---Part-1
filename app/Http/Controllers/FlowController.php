@@ -75,29 +75,150 @@ class FlowController extends Controller
 
     //Adicionar flows
 
-    public function addFlow ($device, $flowTable, $flowId) {
+    public function addFlow ($device, $flowTable, $flowId, $priority) {
         $client = new \GuzzleHttp\Client();
         $headers = [
-        	'auth' => ['admin', 'admin'],
-        	'content-type' => 'application/json'
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
         ];
 
         $body = '{
-				  "flow": [
-				    {
-				      "table_id": "'.$flowTable.'",
-				      "id": "'.$flowId.'"
-				    }
-				  ]
-				}';
+                  "flow": [
+                    {
+                      "table_id": "'.$flowTable.'",
+                      "id": "'.$flowId.'"
+                    }
+                  ]
+                }';
 
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
 
-
-        $client->request('PUT', 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId, [
-            'headers'         => $headers,
-            'body'            => $body,
-    		]);
+        //$client->put($url, $headers, json_encode($body));
+        $client->request('PUT', $url, [
+            'headers' => [
+                'auth' => 'Basic YWRtaW46YWRtaW4=',
+                'content-type' => 'application/json',
+                'Accept' => 'application/json'
+            ],
+            'body' => $body
+        ]);
 
     }
+ 
+
+    //Adicionar flows match+drop
+    public function addFlowPortDrop ($device, $flowTable, $flowId, $priority, $inPort) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowVlanDrop ($device, $flowTable, $flowId, $priority, $vlanId) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowIpSourceDrop ($device, $flowTable, $flowId, $priority, $ipSource) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowIpDestDrop ($device, $flowTable, $flowId, $priority, $ipDest) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowUdpSourceDrop ($device, $flowTable, $flowId, $priority, $udpSIp) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowUdpDestDrop ($device, $flowTable, $flowId, $priority, $udpDIp) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowTcpSourceDrop ($device, $flowTable, $flowId, $priority, $tcpSIp) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
+    public function addFlowTcpDestDrop ($device, $flowTable, $flowId, $priority, $tcpDIp) {
+
+        $client = new \GuzzleHttp\Client();
+        $headers = [
+            'auth' => ['admin', 'admin'],
+            'content-type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+        $url = 'http://10.10.10.2:8181/restconf/config/opendaylight-inventory:nodes/node/'.$device.'/table/'.$flowTable.'/flow/'.$flowId;
+
+        $body =
+    }
+
+
 
 }
