@@ -37,14 +37,14 @@ Route::delete('flowsSummary/4/{flow}', 'FlowController@deleteFlowS4');
 Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}', 'FlowController@addFlow');
 
 /* +.+.+.+ Add flow with Match and DROP +.+.+.+ */ 
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{inPort}', 'FlowController@addFlowPortDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{vlanId}', 'FlowController@addFlowVlanDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{ipSource}', 'FlowController@addFlowIpSourceDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{ipDest}', 'FlowController@addFlowIpDestDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{udpSIp}', 'FlowController@addFlowUdpSourceDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{udpDIp}', 'FlowController@addFlowUdpDestDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{tcpSIp}', 'FlowController@addFlowTcpSourceDrop');
-Route::put('createFlow/{device}/{flowTable}/{flowId}/{priority}/{tcpDIp}', 'FlowController@addFlowTcpDestDrop');
+Route::put('createFlow/port/{device}/{flowTable}/{flowId}/{priority}/{inPort}', 'FlowController@addFlowPortDrop');
+Route::put('createFlow/vlan/{device}/{flowTable}/{flowId}/{priority}/{vlanId}', 'FlowController@addFlowVlanDrop');
+Route::put('createFlow/ipSource/{device}/{flowTable}/{flowId}/{priority}/{ipSource}', 'FlowController@addFlowIpSourceDrop');
+Route::put('createFlow/ipDest/{device}/{flowTable}/{flowId}/{priority}/{ipDest}', 'FlowController@addFlowIpDestDrop');
+Route::put('createFlow/udpSource/{device}/{flowTable}/{flowId}/{priority}/{udpSIp}', 'FlowController@addFlowUdpSourceDrop');
+Route::put('createFlow/udpDest/{device}/{flowTable}/{flowId}/{priority}/{udpDIp}', 'FlowController@addFlowUdpDestDrop');
+Route::put('createFlow/tcpSource/{device}/{flowTable}/{flowId}/{priority}/{tcpSIp}', 'FlowController@addFlowTcpSourceDrop');
+Route::put('createFlow/tcpDest/{device}/{flowTable}/{flowId}/{priority}/{tcpDIp}', 'FlowController@addFlowTcpDestDrop');
 
 
 
